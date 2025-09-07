@@ -1,0 +1,51 @@
+## -------------------------------------------------------------------
+## Base types
+## -------------------------------------------------------------------
+
+Integer  = .Integer
+String   = .String
+
+Uuid     = String( s | s.size == 36 )
+
+File = String( s | s =~ /^[a-h]$/ )
+Rank = Integer( i | i >= 1 && i <= 8 )
+
+Position = <coords> { x: Integer, y: Integer },
+           <chess>  String( s | s =~ /^[a-h][1-8]$/ )
+#           \( s | { file: s[0], rank: s[1].to_i } \)
+#           \( pos | "#{pos.file}#{pos.rank}" \)
+
+Error = {
+  code        :? String
+  description : String
+}
+DefaultErrorSchema = Error
+
+## -------------------------------------------------------------------
+## Domain-specific types
+## -------------------------------------------------------------------
+
+GameId   = Uuid
+PlayerId = Uuid
+
+GameState = String
+
+## -------------------------------------------------------------------
+## Services
+## -------------------------------------------------------------------
+
+CreateGame.Response = {
+  game_id       : GameId
+  initial_state : GameState
+}
+
+PlayMove.Request = {
+  game_id   : GameId
+  from      : Position
+  to        : Position
+}
+
+PlayMove.Response = {
+  game_id   : GameId
+  new_state : GameState
+}

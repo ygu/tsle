@@ -1,0 +1,31 @@
+---
+name: |-
+  Play Move
+
+url: |-
+  /play-move
+
+services:
+- method: |-
+    POST
+
+  description: |-
+    Play the given move
+
+  input_schema: |-
+    {}
+
+  output_schema: |-
+    .
+
+  error_schema: |-
+    .
+
+  examples:
+
+    - description: |-
+        when requested
+      params: {}
+      expected:
+        content_type: application/json
+        status: 200

@@ -1,4 +1,4 @@
-.PHONY: build run clean docker-build docker-run
+.PHONY: build run clean webspicy
 
 build:
 	cargo build
@@ -8,3 +8,6 @@ run:
 
 clean:
 	cargo clean
+
+webspicy:
+	WATCH=webspicy webspicy webspicy

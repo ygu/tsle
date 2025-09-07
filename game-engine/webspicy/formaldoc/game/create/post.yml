@@ -1,0 +1,31 @@
+---
+name: |-
+  Create Game
+
+url: |-
+  /create-game
+
+services:
+- method: |-
+    POST
+
+  description: |-
+    Create a new game
+
+  input_schema: |-
+    {}
+
+  output_schema: |-
+    CreateGame.Response
+
+  error_schema: |-
+    Error
+
+  examples:
+
+    - description: |-
+        when requested
+      params: {}
+      expected:
+        content_type: application/json
+        status: 200
