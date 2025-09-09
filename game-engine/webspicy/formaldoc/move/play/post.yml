@@ -13,19 +13,22 @@ services:
     Play the given move
 
   input_schema: |-
-    {}
+    PlayMove.Request
 
   output_schema: |-
-    .
+    PlayMove.Response
 
   error_schema: |-
-    .
+    Error
 
   examples:
 
     - description: |-
         when requested
-      params: {}
+      params:
+        game_id: 713ce2ed-86d2-47d7-a626-52431d251cd4
+        from: a2
+        to: a4
       expected:
         content_type: application/json
         status: 200

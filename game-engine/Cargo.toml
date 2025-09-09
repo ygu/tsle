@@ -12,3 +12,4 @@ tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["fmt"] }
 hyper = "1.7.0"
 tower = "0.5.2"
+chess = "3.2.0"
