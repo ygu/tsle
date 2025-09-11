@@ -1,3 +1,5 @@
+-include .env
+
 .PHONY: build up down logs restart ps
 
 build:

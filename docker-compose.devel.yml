@@ -6,11 +6,11 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./game-engine:/usr/src/game-engine
-    command: cargo watch -x run
-    environment:
-      - RUST_LOG=debug
-      - DATABASE_URL=postgres://tsle:tsle@database:5432/tsle
+      - ./game-engine:/usr/src/game-engine:cached
+      - ./game-engine/target:/usr/src/game-engine/target:cached
+    command: ./target/debug/game-engine
+    env_file:
+      - ./game-engine/env/devel.env
 
   database:
     image: postgres:16
