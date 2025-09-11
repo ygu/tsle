@@ -9,7 +9,7 @@ async fn main() {
   tracing_subscriber::fmt::init();
 
   // Routes
-  let app = build_app();
+  let app = build_app().await;
 
   // Bind
   let addr = SocketAddr::from(([0, 0, 0, 0], 8080));

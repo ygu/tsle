@@ -1,8 +1,12 @@
 use axum::Json;
 use axum::http::StatusCode;
+use sea_orm::*;
 
-use crate::store::STORE;
-use crate::game::model::GameId;
+use crate::app_state::ctx;
+use crate::http::errors::map_db_err;
+use crate::game::viewpoint::Rest;
+use crate::game::viewpoint::base::{Entity, ActiveModel, Column};
+use crate::game::model::{GameId, GameState};
 
 #[derive(serde::Deserialize)]
 pub struct PlayMoveRequest {
@@ -27,9 +31,14 @@ pub async fn play_move(Json(input): Json<PlayMoveRequest>)
         )
       })?;
 
-    let mut store = STORE.write().unwrap();
+    let db = &ctx().db;
+    let rest = Rest::new(db.clone());
 
-    let state = store.get_mut(&game_id)
+    let game = rest.games()
+      .filter(Column::Id.eq(game_id.to_string()))
+      .one(db)
+      .await
+      .map_err(map_db_err)?
       .ok_or_else(|| {
         (
           StatusCode::NOT_FOUND,
@@ -37,9 +46,22 @@ pub async fn play_move(Json(input): Json<PlayMoveRequest>)
         )
       })?;
 
+    let state = GameState::from_fen(&game.state)
+      .map_err(|e| (StatusCode::BAD_REQUEST, e))?;
+
+    // TODO: appliquer réellement le coup
     // state.apply_move(&input.from, &input.to);
 
     let new_state = state.to_fen();
+
+    Entity::update(ActiveModel {
+      id: Set(game.id.clone()),
+      state: Set(new_state.clone()),
+      ..Default::default()
+    })
+    .exec(db)
+    .await
+    .map_err(map_db_err)?;
 
     Ok(Json(PlayMoveResponse {
       game_id: input.game_id,
