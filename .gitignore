@@ -1,4 +1,5 @@
-.env
+/.env*
+.build
 
 # Rust
 /game-engine/target/
