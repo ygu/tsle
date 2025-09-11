@@ -23,5 +23,19 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
 
+  dbagent:
+    build:
+      context: ./dbagent
+      dockerfile: Dockerfile
+    env_file:
+      - ./dbagent/env/devel.env
+    volumes:
+      - ./dbagent/backups:/home/app/backups
+      - ./dbagent/data:/home/app/data
+      - ./dbagent/migrations:/home/app/migrations
+      - ./dbagent/tasks:/home/app/tasks
+    depends_on:
+      - database
+
 volumes:
   db_data:
