@@ -4,6 +4,9 @@ WORKDIR /usr/src/game-engine
 
 RUN cargo install cargo-watch
 
-EXPOSE 8080
+RUN apt-get update && apt-get install -y libssl-dev pkg-config && rm -rf /var/lib/apt/lists/*
 
-CMD ["cargo", "watch", "-x", "run"]
+COPY Cargo.toml Cargo.lock ./
+COPY src ./src
+
+RUN cargo build
