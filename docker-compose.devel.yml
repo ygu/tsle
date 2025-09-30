@@ -1,5 +1,5 @@
 services:
-  game-engine:
+  game-engine: # requires the project to be built locally
     build:
       context: ./game-engine
       dockerfile: Dockerfile
